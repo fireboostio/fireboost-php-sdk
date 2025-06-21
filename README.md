@@ -1,6 +1,6 @@
-# FireBoost PHP SDK
+# Fireboost PHP SDK
 
-FireBoost PHP SDK is a PHP library for interacting with the FireBoost API. This SDK provides functionalities to manage cache operations, including saving, reading, and deleting cached data with automatic authentication handling.
+Fireboost PHP SDK is a PHP library for interacting with the Fireboost API. This SDK provides functionalities to manage cache operations, including saving, reading, and deleting cached data with automatic authentication handling.
 
 ## Installation
 
@@ -192,7 +192,7 @@ $cacheManager = new CacheManager($customAdapter, $apiKey);
 
 ## Exception Handling
 
-When using the FireBoost PHP SDK, you may encounter the following exceptions:
+When using the Fireboost PHP SDK, you may encounter the following exceptions:
 
 ### ApiException
 
