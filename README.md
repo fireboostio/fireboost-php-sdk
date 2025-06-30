@@ -40,6 +40,9 @@ $publicData = $cacheManager->readPublicCache($cacheKey);
 // Delete data from cache
 $cacheManager->deleteCache($cacheKey);
 
+// Delete all data from cache
+$cacheManager->deleteAllCache();
+
 // Get cache usage statistics
 $stats = $cacheManager->getStatistics();
 ```

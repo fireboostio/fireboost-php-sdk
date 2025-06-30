@@ -175,6 +175,36 @@ class CacheManager
     }
 
     /**
+     * Delete all data from the cache
+     *
+     * @return void
+     * @throws ApiException If an API error occurs
+     */
+    public function deleteAllCache()
+    {
+        if (!$this->adapter->hasToken()) {
+            $this->login();
+        }
+
+        try {
+            $this->api->getConfig()->setHost($this->getApiUrl());
+            $this->api->getConfig()->setApiKeyPrefix('bearer', 'Bearer');
+            $this->api->getConfig()->setAccessToken($this->adapter->getToken());
+
+            $this->api->deleteAllCache();
+        } catch (ApiException $e) {
+            if ($e->getCode() == 401) {
+                $this->login();
+
+                $this->api->getConfig()->setAccessToken($this->adapter->getToken());
+                $this->api->deleteAllCache();
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
      * Read publicly accessible data from the cache
      *
      * This method does not require authentication
@@ -267,11 +297,7 @@ class CacheManager
         // Set the API URL based on the project in the API key
         $this->api->getConfig()->setHost($this->getApiUrl());
 
-        $loginInputData = $this->credentialExtractor->getLoginInputData($this->apiKey);
-
-        $loginInput = new LoginInput([
-            'encripted_api_key' => $loginInputData['encripted_api_key']
-        ]);
+        $loginInput = new LoginInput($this->credentialExtractor->getLoginInputData($this->apiKey));
 
         $loginOutput = $this->api->login($loginInput);
         $this->adapter->storeToken($loginOutput->getJwtToken());
