@@ -45,6 +45,52 @@ $cacheManager->deleteAllCache();
 
 // Get cache usage statistics
 $stats = $cacheManager->getStatistics();
+
+// Get all cache entries with cursor pagination
+$cursor = null;
+$allEntries = [];
+
+do {
+    $response = $cacheManager->getAllCache($cursor);
+
+    // Process the current page of results
+    foreach ($response->getKeys() as $entry) {
+        $allEntries[] = $entry;
+        // Process each entry as needed
+    }
+
+    // Get the cursor for the next page
+    $cursor = $response->getCursor();
+
+    // Continue until there's no more cursor (end of pagination)
+} while ($cursor !== null);
+```
+
+### Pagination with getAllCache
+
+The `getAllCache()` method supports cursor-based pagination to efficiently retrieve large sets of cache entries:
+
+```php
+<?php
+use FireboostIO\SDK\CacheManager;
+
+$cacheManager = new CacheManager();
+
+// Initial request with no cursor
+$response = $cacheManager->getAllCache();
+
+// Display the first page of results
+foreach ($response->getKeys() as $entry) {
+    echo "Key: " . $entry->getCacheKey() . ", Value: " . json_encode($entry->getValue()) . "\n";
+}
+
+// Check if there are more pages
+if ($response->getCursor() !== null) {
+    // Fetch the next page using the cursor
+    $nextPageResponse = $cacheManager->getAllCache($response->getCursor());
+
+    // Process next page...
+}
 ```
 
 ### Using Different Storage Adapters

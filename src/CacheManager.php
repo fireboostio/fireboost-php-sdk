@@ -3,6 +3,7 @@
 namespace FireboostIO\SDK;
 
 use FireboostIO\Api\FireboostApi;
+use FireboostIO\Model\GetAllOutput;
 use FireboostIO\Model\InlineResponse200;
 use FireboostIO\Model\InlineResponse401;
 use FireboostIO\Model\InlineResponse404;
@@ -198,6 +199,38 @@ class CacheManager
 
                 $this->api->getConfig()->setAccessToken($this->adapter->getToken());
                 $this->api->deleteAllCache();
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Read all cache values
+     *
+     * @param string | null $cursor The cursor for pagination
+     * @return GetAllOutput|InlineResponse401|InlineResponse404|InlineResponse423|object The cached content
+     * @throws ApiException If an API error occurs
+     */
+    public function getAllCache(string $cursor = null)
+    {
+        if (!$this->adapter->hasToken()) {
+            $this->login();
+        }
+
+        try {
+            $this->api->getConfig()->setHost($this->getApiUrl());
+            $this->api->getConfig()->setApiKeyPrefix('bearer', 'Bearer');
+            $this->api->getConfig()->setAccessToken($this->adapter->getToken());
+
+            return $this->api->getAllCache($cursor);
+        } catch (ApiException $e) {
+            if ($e->getCode() == 401) {
+                $this->login();
+
+                $this->api->getConfig()->setAccessToken($this->adapter->getToken());
+
+                return $this->api->getAllCache($cursor);
             }
 
             throw $e;
