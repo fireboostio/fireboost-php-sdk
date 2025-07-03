@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f733f1847a00b3d3d17bf65e5de37fc0",
+    "content-hash": "761f295f176ac02a1742c7a803a28f90",
     "packages": [
         {
             "name": "fireboostio/fireboost-php-auth",
@@ -48,16 +48,16 @@
         },
         {
             "name": "fireboostio/fireboost-php-client",
-            "version": "v0.0.7",
+            "version": "v0.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fireboostio/fireboost-php-client.git",
-                "reference": "3cc46a2b95324e607824f7b594e3c37d63fae26b"
+                "reference": "6e50f9b435d5147b6055d9847f54447fbb94b42f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fireboostio/fireboost-php-client/zipball/3cc46a2b95324e607824f7b594e3c37d63fae26b",
-                "reference": "3cc46a2b95324e607824f7b594e3c37d63fae26b",
+                "url": "https://api.github.com/repos/fireboostio/fireboost-php-client/zipball/6e50f9b435d5147b6055d9847f54447fbb94b42f",
+                "reference": "6e50f9b435d5147b6055d9847f54447fbb94b42f",
                 "shasum": ""
             },
             "require": {
@@ -100,9 +100,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fireboostio/fireboost-php-client/issues",
-                "source": "https://github.com/fireboostio/fireboost-php-client/tree/v0.0.7"
+                "source": "https://github.com/fireboostio/fireboost-php-client/tree/v0.0.8"
             },
-            "time": "2025-06-21T14:16:28+00:00"
+            "time": "2025-07-01T04:11:45+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
