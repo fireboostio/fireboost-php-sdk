@@ -8,8 +8,8 @@ use FireboostIO\Model\SetInput;
 use FireboostIO\Model\LoginInput;
 use FireboostIO\ApiException;
 use FireboostIO\SDK\Adapter\TokenStorageAdapterInterface;
-use Fireboostio\Encryptor\ApiKeyExtractor;
-use Fireboostio\Encryptor\CredentialExtractor;
+use FireboostIO\Encryptor\ApiKeyExtractor;
+use FireboostIO\Encryptor\CredentialExtractor;
 use PHPUnit\Framework\TestCase;
 
 class CacheManagerTest extends TestCase

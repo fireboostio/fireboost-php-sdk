@@ -12,8 +12,8 @@ use FireboostIO\Model\LoginInput;
 use FireboostIO\ApiException;
 use FireboostIO\SDK\Adapter\TokenStorageAdapterInterface;
 use FireboostIO\SDK\Adapter\SessionAdapter;
-use Fireboostio\Encryptor\CredentialExtractor;
-use Fireboostio\Encryptor\ApiKeyExtractor;
+use FireboostIO\Encryptor\CredentialExtractor;
+use FireboostIO\Encryptor\ApiKeyExtractor;
 use InvalidArgumentException;
 use RuntimeException;
 
