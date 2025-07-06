@@ -12,8 +12,8 @@ use FireboostIO\Model\LoginInput;
 use FireboostIO\ApiException;
 use FireboostIO\SDK\Adapter\TokenStorageAdapterInterface;
 use FireboostIO\SDK\Adapter\SessionAdapter;
-use Fireboostio\Encryptor\CredentialExtractor;
-use Fireboostio\Encryptor\ApiKeyExtractor;
+use FireboostIO\Encryptor\CredentialExtractor;
+use FireboostIO\Encryptor\ApiKeyExtractor;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -250,6 +250,48 @@ class CacheManager
 
             throw $e;
         }
+    }
+
+    /**
+     * Get the project ID from the API key
+     *
+     * @return string The project ID
+     * @throws InvalidArgumentException If the API key is invalid or missing
+     */
+    public function getProjectId(): string
+    {
+        if (empty($this->apiKey)) {
+            throw new InvalidArgumentException('API key is required to extract project ID');
+        }
+
+        $payload = $this->apiKeyExtractor->getApiKeyPayload($this->apiKey);
+
+        if (!isset($payload['project'])) {
+            throw new InvalidArgumentException('Invalid API key: missing project information');
+        }
+
+        return $payload['project'];
+    }
+
+    /**
+     * Get the full API URL being used for requests
+     *
+     * @return string The complete API URL
+     * @throws InvalidArgumentException If the API key is invalid or missing
+     */
+    public function getFullApiUrl(): string
+    {
+        if (empty($this->apiKey)) {
+            throw new InvalidArgumentException('API key is required to determine API URL');
+        }
+
+        $payload = $this->apiKeyExtractor->getApiKeyPayload($this->apiKey);
+
+        if (!isset($payload['project'])) {
+            throw new InvalidArgumentException('Invalid API key: missing project information');
+        }
+
+        return str_replace('{project}', $payload['project'], self::API_URL_TEMPLATE);
     }
 
     /**
