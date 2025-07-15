@@ -302,8 +302,12 @@ class CacheManager
         if (!isset($payload['project'])) {
             throw new InvalidArgumentException('Invalid API key: missing project information');
         }
+        $urlTemplate = defined('FIREBOOST_API_URL')
+            ? constant('FIREBOOST_API_URL')
+            : (getenv('FIREBOOST_API_URL') ?? self::API_URL_TEMPLATE)
+        ;
 
-        return str_replace('{project}', $payload['project'], self::API_URL_TEMPLATE);
+        return str_replace('{project}', $payload['project'], $urlTemplate);
     }
 
     /**
