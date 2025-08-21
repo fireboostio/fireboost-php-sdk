@@ -334,13 +334,29 @@ class CacheManager
 
         $loginInput = new LoginInput($this->credentialExtractor->getLoginInputData($this->apiKey));
 
-        try {
-            $loginOutput = $this->api->login($loginInput);
-            $this->adapter->storeToken($loginOutput->getJwtToken());
-            $this->adapter->resetLoginAttemptCount();
-        } catch (ApiException $e) {
-            $this->adapter->incrementLoginAttempt(); // Only increment on actual login failure
-            throw $e;
+        $maxRetries = 3;
+        $retryCount = 0;
+        
+        while ($retryCount < $maxRetries) {
+            try {
+                $loginOutput = $this->api->login($loginInput);
+                $this->adapter->storeToken($loginOutput->getJwtToken());
+                $this->adapter->resetLoginAttemptCount();
+                return; // Success - exit the method
+            } catch (ApiException $e) {
+                $retryCount++;
+                
+                // If this is the last retry attempt, increment the login attempt counter
+                if ($retryCount >= $maxRetries) {
+                    $this->adapter->incrementLoginAttempt();
+                    throw $e;
+                }
+                
+                // For network flukes, wait a bit before retrying (exponential backoff with jitter)
+                $waitTime = pow(2, $retryCount - 1); // 1, 2, 4 seconds
+                $jitter = rand(0, 1000000); // 0-1 second random delay to prevent thundering herd
+                usleep(($waitTime * 1000000) + $jitter); // Convert to microseconds and add jitter
+            }
         }
     }
 }
