@@ -329,16 +329,18 @@ class CacheManager
             throw new RuntimeException('Please verify your API key. Something is wrong with the key. Please contact the Fireboost support for assistance.');
         }
 
-        $this->adapter->incrementLoginAttempt();
-
         // Set the API URL based on the project in the API key
         $this->api->getConfig()->setHost($this->getApiUrl());
 
         $loginInput = new LoginInput($this->credentialExtractor->getLoginInputData($this->apiKey));
 
-        $loginOutput = $this->api->login($loginInput);
-        $this->adapter->storeToken($loginOutput->getJwtToken());
-
-        $this->adapter->resetLoginAttemptCount();
+        try {
+            $loginOutput = $this->api->login($loginInput);
+            $this->adapter->storeToken($loginOutput->getJwtToken());
+            $this->adapter->resetLoginAttemptCount();
+        } catch (ApiException $e) {
+            $this->adapter->incrementLoginAttempt(); // Only increment on actual login failure
+            throw $e;
+        }
     }
 }
