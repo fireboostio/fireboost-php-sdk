@@ -142,6 +142,25 @@ $adapter = new FileAdapter();
 $adapter = new FileAdapter('/path/to/storage', 'token_filename', 'login_attempts_filename');
 ```
 
+#### WordPress Transient Adapter
+
+```php
+use FireboostIO\SDK\Adapter\WPTransientAdapter;
+
+// With default settings (1 hour token TTL, 24 hour login attempt TTL)
+$adapter = new WPTransientAdapter();
+
+// Or with custom settings
+$adapter = new WPTransientAdapter(
+    'custom_token_key',           // Custom transient key for token
+    'custom_login_attempts_key',  // Custom transient key for login attempts
+    7200,                         // Token TTL: 2 hours
+    43200                         // Login attempt TTL: 12 hours
+);
+```
+
+**Perfect for WordPress plugins and themes** - uses WordPress transients for persistent storage across REST API calls.
+
 ### Creating Your Own Custom Adapter
 
 You can create your own custom adapter by implementing the `TokenStorageAdapterInterface`. This allows you to store JWT tokens and login attempt counters in any storage system of your choice.

@@ -255,6 +255,22 @@ class CacheManager
     }
 
     /**
+     * Reset login attempt counter
+     *
+     * Use this method if you're getting the "Please verify your API key" error
+     * and want to retry authentication. This is useful when:
+     * - You've fixed your API key and want to try again
+     * - You want to clear the retry limit after resolving network issues
+     * - You need to reset the counter without restarting your application
+     *
+     * @return bool True if reset was successful
+     */
+    public function resetLoginAttempts(): bool
+    {
+        return $this->adapter->resetLoginAttemptCount();
+    }
+
+    /**
      * Get cache usage statistics
      *
      * @return InlineResponse200|InlineResponse401|InlineResponse404|InlineResponse423 The cache statistics including read and write data
